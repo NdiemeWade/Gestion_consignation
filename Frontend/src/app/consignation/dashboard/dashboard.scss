@@ -1,0 +1,53 @@
+// Style global du texte lourd
+.fw-black {
+  font-weight: 800 !important;
+}
+
+// Animation légère au survol des cartes KPI
+.card-kpi {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+  }
+}
+
+// Ronds d'icônes pour chaque statistique
+.kpi-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.bg-primary-subtle { background-color: rgba(13, 110, 253, 0.12) !important; }
+.bg-warning-subtle { background-color: rgba(255, 193, 7, 0.15) !important; }
+.bg-success-subtle { background-color: rgba(25, 135, 84, 0.12) !important; }
+.bg-danger-subtle { background-color: rgba(220, 53, 69, 0.12) !important; }
+
+// Ajoute une petite ligne rouge sur la gauche de la carte d'alerte pour attirer l'œil
+.border-start-alert {
+  border-left: 4px solid #dc3545 !important;
+}
+
+// Tableau des alertes
+.custom-table {
+  thead th {
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    padding: 0.85rem 0.5rem;
+    border-bottom: 2px solid #f1f3f5;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    td {
+      padding: 1rem 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.tracking-wide {
+  letter-spacing: 0.03em;
+}

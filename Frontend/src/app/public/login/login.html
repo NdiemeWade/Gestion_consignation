@@ -1,0 +1,100 @@
+<div class="container-fluid min-vh-100 p-0 overflow-hidden bg-white">
+  <div class="row g-0 min-vh-100">
+    
+    <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between p-5 text-white login-sidebar position-relative">
+      <div class="position-absolute top-0 start-0 end-0 bottom-0 bg-gradient-overlay"></div>
+      
+      <div class="position-relative z-1">
+        <h3 class="fw-bold d-flex align-items-center gap-2 m-0 text-white">
+          <i class="bi bi-box-seam-fill"></i> AirConsigne
+        </h3>
+      </div>
+
+      <div class="position-relative z-1 my-auto max-w-md">
+        <span class="badge bg-white text-primary fw-bold px-3 py-2 rounded-pill mb-3 text-uppercase tracking-wider small">
+          Espace Terminal Aéroportuaire
+        </span>
+        <h1 class="display-4 fw-black text-white mb-3">Sécurisez les bagages en un clic.</h1>
+        <p class="text-white-50 fs-5 lead">
+          Interface centralisée de consignation et de suivi des dépôts passagers pour les agents d'escale autorisés.
+        </p>
+      </div>
+
+      <div class="position-relative z-1 text-white-50 small d-flex justify-content-between align-items-center border-top border-white-10 pt-3">
+        <span>© 2026 Gestion Consignation Inc.</span>
+        <span class="d-flex gap-3">
+          <a href="#" class="text-white-50 text-decoration-none">Aide</a>
+          <a href="#" class="text-white-50 text-decoration-none">Sécurité</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="col-lg-6 d-flex align-items-center justify-content-center p-4 p-md-5 bg-light">
+      <div class="w-100 max-w-sm">
+        
+        <div class="mb-5 text-center text-lg-start">
+          <h2 class="fw-black text-dark mb-2">Bienvenue, Agent</h2>
+          <p class="text-muted">Connectez-vous à votre guichet pour démarrer votre session.</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="d-flex flex-column gap-4">
+          
+          <div>
+            <label class="form-label fw-bold text-secondary small text-uppercase tracking-wide mb-2">Identifiant Agent</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted px-3"><i class="bi bi-person"></i></span>
+              <input 
+                type="text" 
+                class="form-control border-start-0 ps-0 fw-medium" 
+                [(ngModel)]="username" 
+                name="username" 
+                placeholder="Ex: agent.wade" 
+                required
+                autocomplete="username"
+              >
+            </div>
+          </div>
+
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label fw-bold text-secondary small text-uppercase tracking-wide m-0">Mot de passe</label>
+              <a href="#" class="text-primary small text-decoration-none fw-medium">Oublié ?</a>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted px-3"><i class="bi bi-lock"></i></span>
+              <input 
+                type="password" 
+                class="form-control border-start-0 ps-0 fw-medium" 
+                [(ngModel)]="password" 
+                name="password" 
+                placeholder="••••••••" 
+                required
+                autocomplete="current-password"
+              >
+            </div>
+          </div>
+
+          <div class="form-check my-1">
+            <input class="form-check-input border-secondary-subtle" type="checkbox" id="rememberMe">
+            <label class="form-check-input-label text-muted small user-select-none" for="rememberMe">
+              Maintenir ma session active sur ce terminal
+            </label>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-lg w-100 shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2 py-3 fw-bold rounded-3"
+            [disabled]="isLoading || !loginForm.form.valid"
+          >
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span>{{ isLoading ? 'Authentification en cours...' : 'Ouvrir ma session' }}</span>
+            <i *ngIf="!isLoading" class="bi bi-arrow-right-short fs-4 m-0"></i>
+          </button>
+          
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>

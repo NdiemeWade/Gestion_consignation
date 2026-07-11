@@ -1,0 +1,62 @@
+<p class="text-muted small ps-3">admin-layout works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-box-seam me-2"></i> Gestion Consignation
+    </a>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-3 col-lg-2 bg-white sidebar border-end pt-5 position-fixed start-0 top-0 bottom-0" style="z-index: 100; margin-top: 56px;">
+      <div class="position-sticky pt-3 px-3">
+        <ul class="nav flex-column gap-2">
+          
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium rounded p-2 d-block" 
+               routerLink="/dashboard" 
+               routerLinkActive="bg-light fw-bold text-primary">
+              <i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium rounded p-2 d-block" 
+               routerLink="/bagages" 
+               routerLinkActive="bg-light fw-bold text-primary">
+              <i class="bi bi-luggage me-2 text-secondary"></i> Bagages
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium rounded p-2 d-block" 
+               routerLink="/clients" 
+               routerLinkActive="bg-light fw-bold text-primary">
+              <i class="bi bi-people me-2 text-secondary"></i> Clients
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-medium rounded p-2 d-block" 
+               routerLink="/agents" 
+               routerLinkActive="bg-light fw-bold text-primary">
+              <i class="bi bi-shield-lock me-2 text-secondary"></i> Agents
+            </a>
+          </li>
+          
+         <li class="nav-item mt-4 border-top pt-3">
+  <a class="nav-link text-danger fw-medium rounded p-2 d-block" style="cursor: pointer;" (click)="onLogout()">
+    <i class="bi bi-box-arrow-right me-2"></i> Déconnexion
+  </a>
+</li>
+          
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4" style="margin-top: 56px;">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

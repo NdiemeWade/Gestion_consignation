@@ -1,0 +1,276 @@
+<div class="container-fluid py-4 bg-light min-vh-100">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-dark m-0">
+        <i class="bi bi-luggage-fill text-primary me-2"></i>Consigne des Bagages
+      </h2>
+      <p class="text-muted small mb-0">Enregistrez les nouveaux dépôts et gérez l'historique des passagers.</p>
+    </div>
+    
+    <button class="btn btn-primary btn-lg shadow-sm d-flex align-items-center gap-2" (click)="toggleForm()">
+      <i class="bi" [ngClass]="isFormOpen ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+      {{ isFormOpen ? 'Annuler l\'opération' : 'Nouveau Dépôt' }}
+    </button>
+  </div>
+
+  <div *ngIf="isFormOpen" class="row g-4 mb-5">
+    
+    <div class="col-xl-5 col-lg-6">
+      <div class="card h-100 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+            <div class="bg-primary-subtle text-primary rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <i class="bi bi-person-badge-fill fs-4"></i>
+            </div>
+            <div>
+              <h5 class="card-title fw-bold m-0">Informations du Passager</h5>
+              <p class="text-muted small mb-0">Identité et coordonnées du client.</p>
+            </div>
+          </div>
+
+          <form class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">Numéro Pièce d'Identité *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-card-text"></i></span>
+                <input type="text" class="form-control border-start-0 ps-0 text-uppercase fw-bold" [(ngModel)]="passagerForm.num_piece_identite" name="num_piece" placeholder="Ex: 45TYZG672" required>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Nom *</label>
+              <input type="text" class="form-control" [(ngModel)]="passagerForm.nom" name="nom" placeholder="WADE" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Prénom *</label>
+              <input type="text" class="form-control" [(ngModel)]="passagerForm.prenom" name="prenom" placeholder="Ndiémé" required>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">Téléphone *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-telephone"></i></span>
+                <input type="tel" class="form-control border-start-0 ps-0" [(ngModel)]="passagerForm.num_telephone" name="telephone" placeholder="Ex: 766495923" required>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">Adresse Email</label>
+              <input type="email" class="form-control" [(ngModel)]="passagerForm.email" name="email" placeholder="adresse@email.com">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-7 col-lg-6">
+      <div class="card h-100 border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+            <div class="bg-warning-subtle text-warning rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <i class="bi bi-box-seam-fill fs-4"></i>
+            </div>
+            <div>
+              <h5 class="card-title fw-bold m-0">Détails du Dépôt de Bagage</h5>
+              <p class="text-muted small mb-0">Tarification, format et lieu de stockage.</p>
+            </div>
+          </div>
+
+          <form class="row g-3" (ngSubmit)="onSubmitDepot()">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Motif du dépôt</label>
+              <input type="text" class="form-control" [(ngModel)]="bagageForm.motifdepot" name="motifdepot" placeholder="Ex: VOL, TRANSIT...">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Emplacement de stockage *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-geo-alt"></i></span>
+                <input type="text" class="form-control border-start-0 ps-0 fw-medium" [(ngModel)]="bagageForm.emplacement" name="emplacement" placeholder="Ex: BOX A-12" required>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-secondary small">Nombre de bagages *</label>
+              <input type="number" class="form-control fw-bold" [(ngModel)]="bagageForm.nbr_bagage" name="nbr_bagage" min="1" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-secondary small">Format</label>
+              <select class="form-select" [(ngModel)]="bagageForm.format" name="format">
+                <option value="Petit">Petit (Sac à dos)</option>
+                <option value="Moyen">Moyen (Cabine)</option>
+                <option value="Grand">Grand (Soute)</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-secondary small">Prix Unitaire (XOF) *</label>
+              <div class="input-group">
+                <input type="number" class="form-control fw-bold text-end" [(ngModel)]="bagageForm.prix_unitaire" name="prix_unitaire" required>
+                <span class="input-group-text bg-light text-dark fw-bold">XOF</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Date Prévue de Ramassage *</label>
+              <input type="date" class="form-control" [(ngModel)]="bagageForm.date_prevu_ramassage" name="date_prevu_ramassage" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-secondary small">Description libre</label>
+              <input type="text" class="form-control" [(ngModel)]="bagageForm.description" name="description" placeholder="Couleur, marque, état du sac...">
+            </div>
+
+            <div class="col-12 mt-4 pt-3 border-top">
+              <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm d-flex align-items-center justify-content-center gap-2" [disabled]="isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <i *ngIf="!isLoading" class="bi bi-check-circle-fill"></i>
+                {{ isLoading ? 'Enregistrement en cours...' : 'Valider le dépôt et générer le reçu' }}
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-4">
+      <h5 class="card-title fw-bold mb-4">Historique Récent des Consignes</h5>
+      
+      <div *ngIf="isLoading && listeDepots.length === 0" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-2 mb-0">Chargement de la base de données...</p>
+      </div>
+
+      <div *ngIf="!isLoading && listeDepots.length === 0" class="text-center py-5 text-muted">
+        <i class="bi bi-folder-x fs-1"></i>
+        <p class="mt-2 mb-0">Aucun bagage en consigne actuellement.</p>
+      </div>
+
+      <div class="table-responsive" *ngIf="listeDepots.length > 0">
+        <table class="table table-hover align-middle custom-table">
+          <thead class="table-light text-secondary small text-uppercase">
+            <tr>
+              <th class="ps-3">Code / ID</th>
+              <th>Emplacement</th>
+              <th>Bagages</th>
+              <th>Type / Format</th>
+              <th>Tarif total</th>
+              <th>Date Limite</th>
+              <th class="text-end pe-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let depot of listeDepots">
+              <td class="ps-3 fw-bold text-primary">#{{ depot.IDDEPOTBAGAGE }}</td>
+              <td><span class="badge bg-dark-subtle text-dark border px-2 py-1.5"><i class="bi bi-geo-alt me-1"></i>{{ depot.EMPLACEMENT }}</span></td>
+              <td class="fw-bold">{{ depot.NBR_BAGAGE }} u.</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'bg-info text-dark': depot.FORMAT === 'Petit',
+                  'bg-warning text-dark': depot.FORMAT === 'Moyen',
+                  'bg-danger': depot.FORMAT === 'Grand'
+                }">{{ depot.FORMAT }}</span>
+              </td>
+              <td class="fw-bold text-success">{{ depot.NBR_BAGAGE * depot.PRIX_UNITAIRE | number }} XOF</td>
+              <td class="text-muted">{{ depot.DATE_PREVU_RAMASSAGE | date:'dd/MM/yyyy' }}</td>
+              <td class="text-end pe-3">
+                <button class="btn btn-sm btn-outline-secondary me-2" (click)="voirRecu(depot)"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-sm btn-light text-danger" (click)="supprimerConsigne(depot.IDDEPOTBAGAGE)">
+  <i class="bi bi-trash"></i>
+</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="recuSelectionne" class="modal-overlay d-flex align-items-center justify-content-center">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden modal-recu-container">
+    
+    <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center d-print-none">
+      <h6 class="m-0 fw-bold text-secondary"><i class="bi bi-ticket-perforated me-2"></i>Aperçu du ticket</h6>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-primary d-flex align-items-center gap-1" (click)="imprimerRecu()">
+          <i class="bi bi-printer-fill"></i> Imprimer
+        </button>
+        <button class="btn btn-sm btn-light border" (click)="fermerRecu()">Fermer</button>
+      </div>
+    </div>
+
+    <div class="p-4 bg-white text-dark printable-area">
+      <div class="text-center mb-4 border-bottom pb-3">
+        <h3 class="fw-bold m-0 text-primary text-uppercase tracking-wider">AirConsigne</h3>
+        <p class="text-muted small mb-1">Aéroport International - Terminal Consigne</p>
+        <div class="fw-bold fs-5 mt-2 text-dark">TICKET DE DÉPÔT #{{ recuSelectionne.id }}</div>
+        <div class="text-muted small">Date : {{ recuSelectionne.date_depot | date:'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+
+      <div class="row g-3 mb-4 fs-7">
+        <div class="col-6">
+          <span class="text-secondary d-block text-uppercase small font-monospace">Passager</span>
+          <strong class="text-dark">{{ recuSelectionne.nom | uppercase }} {{ recuSelectionne.prenom }}</strong>
+          <div class="text-muted">{{ recuSelectionne.telephone }}</div>
+          <div class="text-muted small">ID: {{ recuSelectionne.piece }}</div>
+        </div>
+        <div class="col-6 text-end">
+          <span class="text-secondary d-block text-uppercase small font-monospace">Emplacement</span>
+          <span class="badge bg-dark fs-6 px-3 py-2 mt-1 rounded-3">
+            <i class="bi bi-geo-alt-fill me-1 text-warning"></i>{{ recuSelectionne.emplacement }}
+          </span>
+        </div>
+      </div>
+
+      <div class="border rounded-3 overflow-hidden mb-4">
+        <table class="table table-sm table-borderless m-0 align-middle fs-7">
+          <thead class="bg-light border-bottom">
+            <tr>
+              <th class="ps-3 py-2">Désignation</th>
+              <th class="text-center py-2">Qté</th>
+              <th class="text-end pe-3 py-2">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-bottom">
+              <td class="ps-3 py-2">
+                <strong>Consigne de bagage</strong>
+                <div class="text-muted small">Format: {{ recuSelectionne.format }}</div>
+              </td>
+              <td class="text-center py-2">x{{ recuSelectionne.nbr_bagage }}</td>
+              <td class="text-end pe-3 py-2 fw-bold">{{ recuSelectionne.nbr_bagage * recuSelectionne.prix_unitaire | number }} XOF</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4">
+        <div>
+          <span class="text-uppercase small text-secondary fw-bold font-monospace d-block">À restituer le</span>
+          <strong class="text-dark">{{ recuSelectionne.date_retrait | date:'dd/MM/yyyy' }}</strong>
+        </div>
+        <div class="text-end">
+          <span class="text-uppercase small text-secondary fw-bold font-monospace d-block">Montant Total</span>
+          <h4 class="fw-bold text-success m-0">{{ recuSelectionne.nbr_bagage * recuSelectionne.prix_unitaire | number }} XOF</h4>
+        </div>
+      </div>
+
+      <div class="text-center pt-2">
+        <div class="barcode-placeholder mx-auto mb-1"></div>
+        <span class="text-muted small font-monospace tracking-widest">*CONSIGNE-{{ recuSelectionne.id }}*</span>
+      </div>
+
+      <div class="text-center border-top pt-3 mt-4 text-muted border-dashed" style="font-size: 0.65rem;">
+        Merci de présenter obligatoirement ce ticket original accompagné de votre pièce d'identité pour le retrait de vos bagages. Tout dépassement de délai fera l'objet d'une facturation complémentaire.
+      </div>
+    </div>
+
+  </div>
+</div>

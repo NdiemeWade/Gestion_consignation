@@ -1,0 +1,69 @@
+// Largeurs maximales pour préserver l'asymétrie du design split
+.max-w-md { max-width: 460px; }
+.max-w-sm { max-width: 400px; }
+
+// Typographie lourde style SaaS moderne
+.fw-black {
+  font-weight: 800 !important;
+}
+
+// Design de la colonne visuelle gauche
+.login-sidebar {
+  background-image: url('https://images.unsplash.com/photo-1542296332-2e4473fac563?auto=format&fit=crop&w=1200&q=80'); // Une belle verrière d'aéroport épurée
+  background-size: cover;
+  background-position: center;
+  background-color: #0d6efd; // Fallback
+}
+
+.bg-gradient-overlay {
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.92) 0%, rgba(10, 48, 122, 0.96) 100%);
+  z-index: 0;
+}
+
+.border-white-10 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+// Customisation moderne des inputs de connexion
+.form-control {
+  padding: 0.75rem 1rem;
+  border-color: #e3e6ec;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: none;
+  
+  &:focus {
+    border-color: #0d6efd;
+    background-color: #fff;
+    // Petit halo léger autour du champ au focus
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1) !important;
+  }
+}
+
+.input-group-text {
+  border-color: #e3e6ec;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 1.1rem;
+}
+
+// Bouton principal arrondi et dynamique
+.btn-primary {
+  border-radius: 10px;
+  background-color: #0d6efd;
+  border: none;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: #0b5ed7;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}

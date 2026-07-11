@@ -1,0 +1,66 @@
+<!--  SECTION 1 : LES CARTES DE STATISTIQUES (KPIs) -->
+  <div class="row g-4 mb-4">
+    
+    <!-- Total Bagages (Historique) -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm rounded-4 h-100 card-kpi">
+        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small fw-bold text-uppercase tracking-wide d-block mb-1">Total Bagages</span>
+            <h2 class="fw-black text-dark m-0">{{ stats?.totalBagages || 0 }}</h2>
+          </div>
+          <div class="bg-primary-subtle text-primary rounded-4 p-3 d-flex align-items-center justify-content-center kpi-icon">
+            <i class="bi bi-folder2-open fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bagages Actuels en Consigne -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm rounded-4 h-100 card-kpi">
+        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small fw-bold text-uppercase tracking-wide d-block mb-1">Bagages Actuels</span>
+            <h2 class="fw-black text-dark m-0">{{ stats?.bagagesActuels || 0 }}</h2>
+          </div>
+          <div class="bg-warning-subtle text-warning rounded-4 p-3 d-flex align-items-center justify-content-center kpi-icon">
+            <i class="bi bi-luggage-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenus du Jour -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm rounded-4 h-100 card-kpi">
+        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small fw-bold text-uppercase tracking-wide d-block mb-1">Revenus Jour</span>
+            <h2 class="fw-black text-success m-0">{{ stats?.revenusJour | number }} <span class="fs-6 fw-bold text-success">XOF</span></h2>
+          </div>
+          <div class="bg-success-subtle text-success rounded-4 p-3 d-flex align-items-center justify-content-center kpi-icon">
+            <i class="bi bi-cash-stack fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertes Dépassement -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm rounded-4 h-100 card-kpi border-start-alert">
+        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+          <div>
+            <span class="text-secondary small fw-bold text-uppercase tracking-wide d-block mb-1">Alertes Retrait</span>
+            <h2 class="fw-black text-danger m-0">{{ stats?.alertesDepassement || 0 }}</h2>
+          </div>
+          <div class="bg-danger-subtle text-danger rounded-4 p-3 d-flex align-items-center justify-content-center kpi-icon">
+            <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  

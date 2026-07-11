@@ -1,53 +1,57 @@
-// On importe l'accès à la base de données configurée précédemment
+// =======================
+// IMPORTS
+// =======================
+
+// Connexion base de données
 const db = require("../config/connect");
 
-// Fonction asynchrone (async) car la requête à la base de données prend du temps (opération I/O bloquante)
-exports.createAgent = async(req, res) => {
+// JWT pour créer des tokens de connexion
+const jwt = require("jsonwebtoken");
 
+const JWT_SECRET = "M@_cl3_S3cr3t_QU1_3st_Tr3s_S3cur1s33";
+
+
+// =======================
+// CREATE AGENT
+// =======================
+exports.createAgent = async (req, res) => {
     try {
+        const { matricule, nom, prenom, email, num_telephone, mot_de_passe } = req.body;
 
-        // Destructuring : on extrait proprement les variables du corps de la requête (req.body)
-        // C'est l'équivalent de faire "const matricule = req.body.matricule;" pour chaque variable
-       const {matricule, nom, prenom, email, num_telephone, mot_de_passe} = req.body;
+        const sql = `
+            INSERT INTO agent (MATRICULE, NOM, PRENOM, EMAIL, NUM_TELEPHONE, MOT_DE_PASSE)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
 
-       // Requête SQL d'insertion. Sécurité importante : on utilise des paramètres préparés (?)
-       // pour éviter les failles par Injection SQL. Les vraies valeurs remplaceront les "?" après coup.
-       const sql = `
-           INSERT INTO agent (MATRICULE, NOM, PRENOM, EMAIL, NUM_TELEPHONE, MOT_DE_PASSE)
-           VALUES (?, ?, ?, ?, ?, ?)
-      `;
-        // On attend (await) l'exécution de la requête. 
-        // Le module mysql2 renvoie un tableau : le premier élément contient les données utiles.
-        // On utilise la destructuration de tableau ([result]) pour récupérer directement cet objet de résultat.
-       const[result] = await db.query(sql, [matricule, nom, prenom, email, num_telephone, mot_de_passe]);
-       
-        // Si tout s'est bien passé, on renvoie un code de succès 201 (Created) 
-        // On retourne un objet JSON contenant un message et l'ID généré automatiquement par MySQL (insertId)
-       res.status(201).json({
-            message: "Agent créé avec succés",
-            id:result.insertId
+        const [result] = await db.query(sql, [
+            matricule,
+            nom,
+            prenom,
+            email,
+            num_telephone,
+            mot_de_passe
+        ]);
+
+        res.status(201).json({
+            message: "Agent créé avec succès",
+            id: result.insertId
         });
+
     } catch (err) {
-        // En cas d'échec (ex: doublon sur le matricule, erreur de syntaxe SQL), le bloc catch intercepte l'erreur
-        // On log l'erreur exacte dans la console du serveur pour pouvoir débugger facilement
-    console.log(err);
-
-    // On renvoie un code 500 (Internal Server Error) pour avertir le client (frontend) que le traitement a échoué côté serveur
-    res.status(500).json({
-        message: "Erreur serveur",
-        error: err.message
-    });
-}
-}
+        res.status(500).json({
+            message: "Erreur serveur",
+            error: err.message
+        });
+    }
+};
 
 
-
-//lister tous les agents
-
+// =======================
+// GET ALL AGENTS
+// =======================
 exports.getAllAgents = async (req, res) => {
     try {
         const sql = "SELECT * FROM agent";
-
         const [rows] = await db.query(sql);
 
         res.status(200).json({
@@ -64,26 +68,17 @@ exports.getAllAgents = async (req, res) => {
 };
 
 
-
-//modifier les agents 
+// =======================
+// UPDATE AGENT
+// =======================
 exports.updateAgent = async (req, res) => {
-
-   
+    try {
         const { matricule } = req.params;
-
-        const {
-            nom,
-            prenom,
-            num_telephone,
-            email,
-            mot_de_passe
-        } = req.body;
-
- try {
+        const { nom, prenom, num_telephone, email, mot_de_passe } = req.body;
 
         const sql = `
             UPDATE agent
-            SET  NOM = ?, PRENOM = ?, NUM_TELEPHONE = ?, EMAIL = ?, MOT_DE_PASSE = ?
+            SET NOM = ?, PRENOM = ?, NUM_TELEPHONE = ?, EMAIL = ?, MOT_DE_PASSE = ?
             WHERE MATRICULE = ?
         `;
 
@@ -96,19 +91,16 @@ exports.updateAgent = async (req, res) => {
             matricule
         ]);
 
-        if (result.affectedRows === 0)
-             {
-    return res.status(404).json({
-        message: "Aucun agent trouvé avec cette matricule"
-    });
-}
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: "Aucun agent trouvé avec cette matricule"
+            });
+        }
 
         res.status(200).json({
-            message: "Agent modifié avec succès",
-            changes: result.affectedRows
+            message: "Agent modifié avec succès"
         });
 
-        
     } catch (err) {
         res.status(500).json({
             message: "Erreur serveur",
@@ -118,28 +110,65 @@ exports.updateAgent = async (req, res) => {
 };
 
 
+// =======================
+// DELETE AGENT
+// =======================
+exports.deleteAgent = (req, res) => {
+    // 1. On récupère l'id qui vient de la route (/:id)
+    const idAgent = req.params.id; 
 
-//supprimer un agent
-exports.deleteAgent = async (req, res) => {
-    try{
+    // 2. On écrit la requête SQL en ciblant la bonne colonne de ta table MySQL
+    const query = 'DELETE FROM agent WHERE IDAgent = ?';
 
-    const { matricule } = req.params;
+    db.query(query, [idAgent], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Impossible de supprimer l'agent" });
+        }
+        res.status(200).json({ message: 'Agent supprimé avec succès !' });
+    });
+
+};
+
+
+
+// =======================
+// LOGIN + JWT TOKEN
+// =======================
+exports.loginAgent = async (req, res) => {
+    try {
+        const { email, mot_de_passe } = req.body;
 
         const sql = `
-            DELETE FROM agent
-            WHERE MATRICULE = ?
+            SELECT * FROM agent
+            WHERE EMAIL = ? AND MOT_DE_PASSE = ?
         `;
 
-        const [result] = await db.query(sql, [matricule]);
+        const [rows] = await db.query(sql, [email, mot_de_passe]);
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({
-                message: "Aucun agent trouvé avec ce matricule"
+        // Vérifie si utilisateur existe
+        if (rows.length === 0) {
+            return res.status(401).json({
+                message: "Email ou mot de passe incorrect"
             });
         }
 
+        // 🚀 CORRECTION : Utilisation de la variable réelle JWT_SECRET (sans guillemets)
+        const token = jwt.sign(
+            {
+                matricule: rows[0].MATRICULE,
+                email: rows[0].EMAIL
+            },
+            JWT_SECRET,
+            {
+                expiresIn: "24h"
+            }
+        );
+
+        // Réponse finale
         res.status(200).json({
-            message: "Agent supprimé avec succès"
+            message: "Connexion réussie",
+            token
         });
 
     } catch (err) {

@@ -1,0 +1,40 @@
+// Style pour les avatars basés sur les initiales
+.avatar-initials {
+  width: 40px;
+  height: 40px;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.text-medium {
+  font-size: 0.95rem;
+  padding: 0.65rem 1rem;
+}
+
+// Table stylisée unifiée
+.custom-table {
+  thead th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 1rem 0.75rem;
+    border-bottom: 2px solid #f1f3f5;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: background-color 0.15s ease;
+    
+    &:hover {
+      background-color: rgba(248, 249, 250, 0.85);
+    }
+  }
+  
+  td {
+    padding: 1rem 0.75rem;
+    font-size: 0.92rem;
+  }
+}
+
+.bg-primary-subtle { background-color: rgba(13, 110, 253, 0.12) !important; }
+.bg-success-subtle { background-color: rgba(25, 135, 84, 0.12) !important; }
